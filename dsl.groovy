@@ -119,7 +119,7 @@ fi
   }
 }
 
-buildPipelineView('task') {
+buildPipelineView('pipeline') {
     filterBuildQueue()
     filterExecutors()
     title('Project A CI Pipeline')
