@@ -1,4 +1,4 @@
-job("j1") {
+job("job1") {
   scm {
         github('gautamnankani/test555', 'dev1')
     }
@@ -7,10 +7,10 @@ job("j1") {
   }
 }
 
-job("j2") {
+job("job2") {
   triggers {
     upstream {
-      upstreamProjects('j1')
+      upstreamProjects('job1')
     }
   }
   steps {
@@ -30,10 +30,10 @@ sudo bash webserver_kube/copy.sh
   }
 }
 
-job("j3") {
+job("job3") {
   triggers {
     upstream {
-      upstreamProjects('j2')
+      upstreamProjects('job2')
     }
   }
   steps {
@@ -44,7 +44,7 @@ touch play.properties
 html_port=30000
 php_port=31000
 flag=0
-for x in \$(ls ../j1/.)
+for x in \$(ls ../job1/.)
 do
   if [[ -n \$(echo \$x | grep [.]html) ]]
   then
@@ -81,7 +81,7 @@ fi
   }
   publishers {
     downstreamParameterized {
-      trigger("j4") {
+      trigger("job4") {
         condition("SUCCESS")
         parameters {
           predefinedBuildParameters {
@@ -96,7 +96,7 @@ fi
 }
 
 
-job("j4") {
+job("job4") {
   parameters {
     stringParam {
       name("Status")
@@ -119,12 +119,12 @@ fi
   }
 }
 
-buildPipelineView('task6') {
+buildPipelineView('task') {
     filterBuildQueue()
     filterExecutors()
     title('Project A CI Pipeline')
     displayedBuilds(5)
-    selectedJob('j1')
+    selectedJob('job1')
     alwaysAllowManualTrigger()
     showPipelineParameters()
     refreshFrequency(60)
